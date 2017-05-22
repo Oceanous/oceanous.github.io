@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			#map {
+				width: 100%;
+				height: 500px;
+			}
+		</style>
+	</head>
+	<body>
+		<h3>Latitude/Longitude Mapping</h3>
+		<div id="map"> </div>
+		<input type="file" id="selectFiles" value="Import" /><br />
+		<button id="import">Import</button>
+		<textarea rows=20 cols=50 id="result"></textarea>
+		<script>
+		var map;
+		  function initMap() {
+			var berkeley = {lat: 37.8730, lng: -122.259852};
+			map = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 15,
+			  center: berkeley
+			});
+		  }
+		document.getElementById('import').onclick = function() {
+		  var files = document.getElementById('selectFiles').files;
+		  console.log(files);
+		  if (files.length <= 0) {
+		    return false;
+		  }
+
+		  var fr = new FileReader();
+
+		  fr.onload = function(e) {
+		  console.log(e);
+		    var result = JSON.parse(e.target.result);
+			console.log(result);
+			for (i = 0; i < result.length; i++) {
+				var pos = {lat: parseFloat(result[i].lat), lng: parseFloat(result[i].lon)};
+				var title = result[i].date + " " + result[i].time + " " + result[i].satellites;
+				var marker = new google.maps.Marker({
+					position: pos,
+					title: title
+				});
+				marker.setMap(map);
+				console.log(i);
+			}
+		    var formatted = JSON.stringify(result, null, 2);
+		        document.getElementById('result').value = formatted;
+		  }
+
+		  fr.readAsText(files.item(0));
+		};
+		</script>
+		<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuNRD6pNHwiq-pJYLp1YJqGytiecXLc5g&callback=initMap">
+		</script>
+	</body>
+</html>
