@@ -1,30 +1,30 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="organizer.js"></script>
 </head>
-<script src="organizer.js"></script>
-<body>
-<div class="form-style-3">
-<form>
-<fieldset><legend>Personal</legend>
-<label for="field1"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="field1" value="" /></label>
-<label for="field2"><span>Email <span class="required">*</span></span><input type="email" class="input-field" name="field2" value="" /></label>
-<label for="field3"><span>Phone <span class="required">*</span></span><input type="text" class="input-field" name="field3" value="" /></label>
-<label for="field4"><span>Subject</span><select name="field4" class="select-field">
-<option value="Appointment">Appointment</option>
-<option value="Interview">Interview</option>
-<option value="Regarding a post">Regarding a post</option>
-</select></label>
-</fieldset>
-<fieldset><legend>Message</legend>
-<label for="field6"><span>Message <span class="required">*</span></span><textarea name="field6" class="textarea-field"></textarea></label>
-<label><span> </span><input type="submit" onclick="catFact()" value="Submit" /></label>
-</fieldset>
-</form>
-</div>
-</body>
-</html>
+<table class="a">
+  <tr>
+    <th>Avatar</th>
+    <th>Discord ID</th>
+    <th>Discord Username</th>
+    <th>Boss 1</th>
+    <th>Boss 2</th>
+    <th>Boss 3</th>
+    <th>Boss 4</th>
+  </tr>
+  <tr>
+    <td style="text-align:center">    <img src="https://cdn.discordapp.com/avatars/629992107783880705/56c70a08215f0f9506af5e0698954a06" id="testAvi" alt="Italian Trulli">    </td>
+    <td style="text-align:center">    <input type="text" id="fname" onkeypress="entered(event, this)"><br>    </td>
+    <td style="text-align:center">Tobias</td>
+    <td style="text-align:center"><select name="boss1" id="boss1">  <option value="volvo">Volvo</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td style="text-align:center">16</td>
+    <td style="text-align:center">14</td>
+    <td style="text-align:center">  <button onclick="getAvatar('268363012493017089')">Avatar</button>   </td>
+    <td style="text-align:center"> <button onclick="catFact()">Cat</button> </td>
+    <td style="text-align:center">16</td>
+
+  </tr>
+</table>
