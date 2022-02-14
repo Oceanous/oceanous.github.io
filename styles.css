@@ -4,3 +4,17 @@ table.a {
 	margin-left: auto;
 	margin-right: auto;
 }
+.center-screen {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+  }
+  th, td {
+	padding: 8px;
+	text-align: center;
+	border-right: solid 1px #ddd; 
+	border-left: solid 1px #ddd;
+	border-bottom: 1px solid #ddd;
+  }

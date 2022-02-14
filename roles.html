@@ -1,0 +1,71 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script src="organizer.js"></script>
+  </head>
+  <h1 class="center-screen">RA Ping Organizer</h1>
+      Wing:
+      <select id="wing"> 
+        <option value="Wing1">Wing 1</option>
+        <option value="Wing2">Wing 2</option>
+        <option value="Wing3">Wing 3</option>
+        <option value="Wing4">Wing 4</option>
+        <option value="Wing5">Wing 5</option>
+        <option value="Wing6">Wing 6</option>
+        <option value="Wing7">Wing 7</option>
+      </select>
+<p><a href="/">main</a></p>
+  <table >
+    <tr height="70">
+      <th>Avatar</th>
+      <th>Discord ID</th>
+      <th>Discord Username</th>
+      <th id="Boss1">Boss 1</th>
+      <th id="Tag1"></th>
+      <th id="Boss2">Boss 2</th>
+      <th id="Tag2"></th>
+      <th id="Boss3">Boss 3</th>
+      <th id="Tag3"></th>
+      <th id="Boss4">Boss 4</th>
+      <th id="Tag4"></th>
+    </tr>
+    <tr height="70">
+      <td style="text-align:center">    <img id="AvatarUser1" alt="AvatarUser1">                                         </td>
+      <td style="text-align:center">    <input type="text" id="User1" onkeypress="entered(event, this)">                 </td>
+      <td style="text-align:center">    <p id="NameUser1">Username 1</p>                                                 </td>
+      <td style="text-align:center">    <select id="RoleBoss1User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss1User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss2User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss2User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss3User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss3User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss4User1">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss4User1">  <option value="volvo">Volvo</option>    </select>  </td>      
+      </select></td>
+    </tr>
+    <tr height="70">  
+      <td style="text-align:center">    <img id="AvatarUser2" alt="AvatarUser2">                                         </td>
+      <td style="text-align:center">    <input type="text" id="User2" onkeypress="entered(event, this)">                 </td>
+      <td style="text-align:center">    <p id="NameUser2">Username 2</p>                                                 </td>
+      <td style="text-align:center">    <select id="RoleBoss1User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss1User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss2User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss2User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss3User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss3User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="RoleBoss4User2">  <option value="volvo">Volvo</option>    </select>  </td>
+      <td style="text-align:center">    <select id="TagBoss4User2">  <option value="volvo">Volvo</option>    </select>  </td>  
+  
+    </tr>
+  </table>
+  
+  <!-- TODO: 
+    1. button to unset each role and tag
+    2. Some way to edit their own specified roles for each boss: make a json txt and download/upload? cookie?
+    3. add/remove rows of text boxes with specific roles and tags
+    4. tags: tank tag, cannons, shrooms, mortars, sabs, reflects, backwarg, kc push, mo roles, oil kite,
+      superspeed, stun, throw, greens, swords, shields, bait, mat tank
+    5. button under each boss on whether to include for pinging purposes
+    6. button and text field for discord ping 
+    7. add wings? (strikes?)
+  -->
+    

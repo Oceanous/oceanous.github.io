@@ -2,29 +2,42 @@
   <link rel="stylesheet" href="styles.css">
   <script src="organizer.js"></script>
 </head>
-<table class="a">
-  <tr>
+<body onload="todoOnload()">
+<h1 class="center-screen">RA Ping Organizer</h1>
+    Wing:
+    <select id="wing"> 
+      <option hidden disabled selected value> -- Select a wing -- </option>
+      <option value="wing1">Wing 1</option>
+      <option value="wing2">Wing 2</option>
+      <option value="wing3">Wing 3</option>
+      <option value="wing4">Wing 4</option>
+      <option value="wing5">Wing 5</option>
+      <option value="wing6">Wing 6</option>
+      <option value="wing7">Wing 7</option>
+    </select>
+<p><a href="/roles">roles</a></p>
+<table id="table">
+  <tr height="80">
     <th>Avatar</th>
     <th>Discord ID</th>
-    <th>Discord Username</th>
-    <th>Boss 1</th>
-    <th>Boss 2</th>
-    <th>Boss 3</th>
-    <th>Boss 4</th>
-  </tr>
-  <tr>
-    <td style="text-align:center">    <img src="https://cdn.discordapp.com/avatars/629992107783880705/56c70a08215f0f9506af5e0698954a06" id="testAvi" alt="Italian Trulli">    </td>
-    <td style="text-align:center">    <input type="text" id="fname" onkeypress="entered(event, this)"><br>    </td>
-    <td style="text-align:center">Tobias</td>
-    <td style="text-align:center"><select name="boss1" id="boss1">  <option value="volvo">Volvo</option>
-    </select></td>
-  </tr>
-  <tr>
-    <td style="text-align:center">16</td>
-    <td style="text-align:center">14</td>
-    <td style="text-align:center">  <button onclick="getAvatar('268363012493017089')">Avatar</button>   </td>
-    <td style="text-align:center"> <button onclick="catFact()">Cat</button> </td>
-    <td style="text-align:center">16</td>
-
+    <th>Username</th>
+    <th id="Boss1" colspan="2">Boss 1</th>
+    <th id="Boss2" colspan="2">Boss 2</th>
+    <th id="Boss3" colspan="2">Boss 3</th>
+    <th id="Boss4" colspan="2">Boss 4</th>
   </tr>
 </table>
+</body>
+
+<!-- TODO: 
+  1. role and boss icons
+  2. Some way to edit their own specified roles for each boss: make a json txt cookie?
+  3. add/remove rows of text boxes with specific roles and tags
+  4. tags: tank tag, cannons, shrooms, mortars, sabs, reflects, backwarg, kc push, mo roles, oil kite,
+    superspeed, stun, throw, greens, swords, shields, mat tank
+  5. button under each boss on whether to include for pinging purposes
+  6. button and text field for discord ping 
+  7. add wings? (strikes?)
+  
+-->
+  
