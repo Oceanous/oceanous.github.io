@@ -10,6 +10,7 @@ table.a {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
+	color: white
   }
   th, td {
 	padding: 8px;
@@ -18,3 +19,23 @@ table.a {
 	border-left: solid 1px #ddd;
 	border-bottom: 1px solid #ddd;
   }
+.options {
+    color:white;
+	background-color: black;
+}
+.selects {
+    color:white;
+	background-color: darkslateblue;
+}
+body {
+	color:white;
+}
+a {
+    text-decoration: none;
+}
+a:link, a:visited {
+    color: white;
+}
+a:hover {
+    color: red;
+}

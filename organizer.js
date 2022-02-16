@@ -35,15 +35,21 @@ function idEntered(e) {
 function somethingSelected(e) {
   prevValue = previousOptionValueJson[this.column + this.user]
   previousOptionValueJson[this.column + this.user] = this.value
+  var selectedImage = document.getElementById(this.column + this.user + "Image")
+  var selectedReact = this.options[this.selectedIndex].react
+  if (selectedReact && selectedReact in reactIconMap) {
+    selectedImage.src = reactIconMap[selectedReact]
+    selectedImage.style.display = "inline"
+  } 
   for (var i = 1; i <= 10; i++) {
     var otherUserSelect = document.getElementById(this.column + i)
     if (i == this.user || otherUserSelect == null) {
       continue
     }
-    otherUserSelectOptionNew = document.getElementById(this.column + i + this.value)
+    otherUserSelectOptionNew = document.getElementById(this.column + i + "Option" + this.value)
     otherUserSelectOptionNew.disabled = true
     if (prevValue != "None") {
-      otherUserSelectOptionOld = document.getElementById(this.column + i + prevValue)
+      otherUserSelectOptionOld = document.getElementById(this.column + i + "Option" + prevValue)
       otherUserSelectOptionOld.disabled = false
     }
   }  
@@ -73,11 +79,14 @@ function populateTable() {
     var avatar = document.createElement('img')
     avatar.id = "AvatarUser" + i
     avatar.alt = "Avi"
+    avatar.src = "assets/defaultAvatar.png"
+    avatar.height = "64"
     avatarCell.appendChild(avatar)
 
     var discordIdCell = row.insertCell(1)
     var discordId = document.createElement('input')
     discordId.setAttribute('type', 'text')
+    discordId.className = "selects"
     discordId.id = "User" + i
     discordId.addEventListener('keypress', idEntered)
     discordIdCell.appendChild(discordId)
@@ -94,12 +103,14 @@ function populateTable() {
       var roleCell = row.insertCell(columnIndex)
       var role = document.createElement('select')
       role.column = "RoleBoss" + j + "User"
+      role.className = "selects"
       role.user = i
       role.id = "RoleBoss" + j + "User" + i
       role.addEventListener('change', somethingSelected)
 
       var opt = document.createElement('option')
-      opt.id = "RoleBoss" + j + "User" + i + "None"
+      opt.id = "RoleBoss" + j + "User" + i + "OptionNone"
+      opt.className = "options"
       opt.value = "None"
       opt.disabled = true
       opt.hidden = true
@@ -116,15 +127,22 @@ function populateTable() {
       roleReset.addEventListener('click', unsetSelect)
       roleCell.appendChild(roleReset)
 
+      var roleReact = document.createElement('img')
+      roleReact.id = "RoleBoss" + j + "User" + i + "Image"
+      roleReact.height = "24"
+      roleCell.appendChild(roleReact)
+
       var tagCell = row.insertCell(columnIndex + 1)
       var tag = document.createElement('select')
+      tag.className = "selects"
       tag.column = "TagBoss" + j + "User"
       tag.user = i
       tag.id = "TagBoss" + j + "User" + i
       tag.addEventListener('change', somethingSelected)
 
       var opt2 = document.createElement('option')
-      opt2.id = "TagBoss" + j + "User" + i + "None"
+      opt2.id = "TagBoss" + j + "User" + i + "OptionNone"
+      opt2.className = "options"
       opt2.value = "None"
       opt2.disabled = true
       opt2.hidden = true
@@ -141,6 +159,10 @@ function populateTable() {
       tagReset.addEventListener('click', unsetSelect)
       tagCell.appendChild(tagReset)
 
+      var tagReact = document.createElement('img')
+      tagReact.id = "TagBoss" + j + "User" + i + "Image"
+      tagReact.height = "24"
+      tagCell.appendChild(tagReact)
     }
   }
 }
@@ -149,12 +171,14 @@ function unsetSelect() {
   var ele = document.getElementById(this.column + this.user)
   var selectedOption = ele.options[ele.selectedIndex]
   ele.value = "None"
+  var selectedImage = document.getElementById(this.column + this.user + "Image")
+  selectedImage.style.display = "none"
   for (var i = 1; i <= 10; i++) {
     var otherUserSelect = document.getElementById(this.column + i)
     if (otherUserSelect == null) {
       continue
     }
-    otherUserOption = document.getElementById(this.column + i + selectedOption.value)
+    otherUserOption = document.getElementById(this.column + i + "Option" + selectedOption.value)
     otherUserOption.disabled = false
   }
   previousOptionValueJson[this.column + this.user] = "None"}
@@ -174,7 +198,8 @@ function setBosses(wing) {
       var roleBoss = document.getElementById("RoleBoss" + i + "User" + j)
       clearOptions(roleBoss)
       var opt = document.createElement('option')
-      opt.id = "RoleBoss" + i + "User" + j + "None"
+      opt.id = "RoleBoss" + i + "User" + j + "OptionNone"
+      opt.className = "options"
       opt.value = "None"
       opt.disabled = true
       opt.hidden = true
@@ -185,7 +210,8 @@ function setBosses(wing) {
       var tagBoss = document.getElementById("TagBoss" + i + "User" + j)
       clearOptions(tagBoss)
       var opt2 = document.createElement('option')
-      opt2.id = "TagBoss" + i + "User" + j + "None"
+      opt2.id = "TagBoss" + i + "User" + j + "OptionNone"
+      opt2.className = "options"
       opt2.value = "None"
       opt2.disabled = true
       opt2.hidden = true
@@ -201,9 +227,11 @@ function setBosses(wing) {
       for (var k = 0; k < roleArray.length; k++) {
         var role = roleArray[k]
         var opt = document.createElement('option');
-        opt.id = "RoleBoss" + i + "User" + j + role.value
+        opt.id = "RoleBoss" + i + "User" + j + "Option" + k
+        opt.className = "options"
         opt.text = role.name
-        opt.value = role.value
+        opt.value = k
+        opt.react = role.value
         roleBoss.add(opt)
       }
 
@@ -211,9 +239,11 @@ function setBosses(wing) {
       for (var k = 0; k < tagArray.length; k++) {
         var tag = tagArray[k]
         var opt = document.createElement('option');
-        opt.id = "TagBoss" + i + "User" + j + tag.value
+        opt.id = "TagBoss" + i + "User" + j + "Option" + k
+        opt.className = "options"
         opt.text = tag.name
-        opt.value = tag.value
+        opt.value = k
+        opt.react = tag.value
         tagBoss.add(opt)
       }
     }
@@ -227,373 +257,8 @@ function clearOptions(ele) {
   }
 }
 
-
-
 function wingSelect() {
-  console.log(this.value)
   setBosses(this.value)
-}
-
-var wingRoleJson = {
-  "wing1" : {
-    "boss1": {
-        "name" : "Vale Guardian",
-        "roles" : [
-          { name:'Druid', value:"druid" },
-          { name:'Quickness', value:"quick1" },
-          { name:'Quickness', value:"quick2" },
-          { name:'Alacrity', value:"alac" },
-          { name:'Banners', value:"banners" },
-          { name:'DPS', value:"dps1" },
-          { name:'DPS', value:"dps2" },
-          { name:'DPS', value:"dps3" },
-          { name:'DPS', value:"dps4" },
-          { name:'DPS', value:"dps5" }
-        ],
-        "tags" : [
-          { name:'Tank', value:"tank"}
-        ]
-    },
-    "boss2": {
-      "name" : "Gorseval",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Tank', value:"tank"}
-      ]
-    },
-    "boss3": {
-      "name" : "Sabetha",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Flak Kite', value:"kite"},
-        { name:'Cannons 1', value:"cannons1"},
-        { name:'Cannons 2', value:"cannons2"}
-      ]
-    },
-    "boss4": {
-      "name" : null
-    }
-  },
-
-  "wing2" : {
-    "boss1": {
-        "name" : "Slothasor",
-        "roles" : [
-          { name:'Druid', value:"druid" },
-          { name:'Quickness', value:"quick1" },
-          { name:'Quickness', value:"quick2" },
-          { name:'Alacrity', value:"alac" },
-          { name:'Banners', value:"banners" },
-          { name:'DPS', value:"dps1" },
-          { name:'DPS', value:"dps2" },
-          { name:'DPS', value:"dps3" },
-          { name:'DPS', value:"dps4" },
-          { name:'DPS', value:"dps5" }
-        ],
-        "tags" : [
-          { name:'Shroom', value:"shroom1"},
-          { name:'Shroom', value:"shroom2"},
-          { name:'Shroom', value:"shroom3"},
-          { name:'Shroom', value:"shroom4"}
-        ]
-    },
-    "boss2": {
-      "name" : "Bandit Trio",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Mortars', value:"mortars"},
-        { name:'Saboteurs', value:"sabs"}
-      ]
-    },
-    "boss3": {
-      "name" : "Matthias",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Reflect', value:"reflect"}
-      ]
-    },
-    "boss4": {
-      "name" : null
-    }
-  },
-
-  "wing3" : {
-    "boss1": {
-        "name" : "Escort",
-        "roles" : [
-          { name:'Druid', value:"druid" },
-          { name:'Quickness', value:"quick1" },
-          { name:'Quickness', value:"quick2" },
-          { name:'Alacrity', value:"alac" },
-          { name:'Banners', value:"banners" },
-          { name:'DPS', value:"dps1" },
-          { name:'DPS', value:"dps2" },
-          { name:'DPS', value:"dps3" },
-          { name:'DPS', value:"dps4" },
-          { name:'Tower', value:"tower" }
-        ],
-        "tags" : [
-          { name:'Backwarg', value:"backwarg"}
-        ]
-    },
-    "boss2": {
-      "name" : "Keep Construct",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Tank', value:"tank"},
-        { name:'Pusher', value:"pusher"}
-      ]
-    },
-    "boss3": {
-      "name" : "Twisted Castle",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-      ]
-    },
-    "boss4": {
-      "name" : "Xera",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Tank', value:"tank"}
-      ]
-    }
-  },
-
-  "wing4" : {
-    "boss1": {
-        "name" : "Cairn",
-        "roles" : [
-          { name:'Druid', value:"druid" },
-          { name:'Quickness', value:"quick1" },
-          { name:'Quickness', value:"quick2" },
-          { name:'Alacrity', value:"alac1" },
-          { name:'Alacrity', value:"alac2" },
-          { name:'Banners', value:"banners" },
-          { name:'DPS', value:"dps2" },
-          { name:'DPS', value:"dps3" },
-          { name:'DPS', value:"dps4" },
-          { name:'DPS', value:"dps5" }
-        ],
-        "tags" : [
-        ]
-    },
-    "boss2": {
-      "name" : "Mursaat Overseer",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Claim', value:"claim"},
-        { name:'Protect', value:"protect"},
-        { name:'Dispel', value:"dispel"}
-      ]
-    },
-    "boss3": {
-      "name" : "Samarog",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-      ]
-    },
-    "boss4": {
-      "name" : "Deimos",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Hand Kite', value:"handKite" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Tank', value:"tank"},
-        { name:'Oil Kite', value:"oilKite"}
-      ]
-    }
-  },
-
-  "wing5" : {
-    "boss1": {
-        "name" : "Soulless Horror",
-        "roles" : [
-          { name:'Druid', value:"druid" },
-          { name:'Quickness', value:"quick1" },
-          { name:'Quickness', value:"quick2" },
-          { name:'Alacrity', value:"alac1" },
-          { name:'Alacrity', value:"alac2" },
-          { name:'Epi', value:"epi" },
-          { name:'DPS', value:"dps2" },
-          { name:'DPS', value:"dps3" },
-          { name:'DPS', value:"dps4" },
-          { name:'DPS', value:"dps5" }
-        ],
-        "tags" : [
-          { name:'Tank', value:"tank1"},
-          { name:'Tank', value:"tank2"}
-        ]
-    },
-    "boss2": {
-      "name" : "Rivers",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Superspeed', value:"superspeed" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-      ]
-    },
-    "boss3": {
-      "name" : "Statues",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac" },
-        { name:'Banners', value:"banners" },
-        { name:'DPS', value:"dps1" },
-        { name:'DPS', value:"dps2" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Tank', value:"tank"},
-        { name:'Stun', value:"stun1"},
-        { name:'Stun', value:"stun2"},
-        { name:'Throw', value:"throw1"},
-        { name:'Throw', value:"throw2"}
-
-      ]
-    },
-    "boss4": {
-      "name" : "Dhuum",
-      "roles" : [
-        { name:'Druid', value:"druid" },
-        { name:'Quickness', value:"quick1" },
-        { name:'Quickness', value:"quick2" },
-        { name:'Alacrity', value:"alac1" },
-        { name:'Alacrity', value:"alac2" },
-        { name:'Banners', value:"banners" },
-        { name:'Kite', value:"Kite" },
-        { name:'DPS', value:"dps3" },
-        { name:'DPS', value:"dps4" },
-        { name:'DPS', value:"dps5" }
-      ],
-      "tags" : [
-        { name:'Green 1', value:"g1"},
-        { name:'Green 2', value:"g2"},
-        { name:'Green 3', value:"g3"},
-        { name:'Tank', value:"tank"}
-      ]
-    }
-  }
 }
 
 function todoOnload () {

@@ -1,11 +1,13 @@
 <head>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script src="data.js"></script>
   <script src="organizer.js"></script>
 </head>
-<body onload="todoOnload()">
+<body onload="todoOnload()" style="background-color:darkslategray;" color="white">
 <h1 class="center-screen">RA Ping Organizer</h1>
     Wing:
-    <select id="wing"> 
+    <select id="wing" class="selects"> 
       <option hidden disabled selected value> -- Select a wing -- </option>
       <option value="wing1">Wing 1</option>
       <option value="wing2">Wing 2</option>
