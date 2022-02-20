@@ -453,7 +453,7 @@ function checkAndGetCookie() {
   }
   if (!cookieExists) {
     console.log("No cookies set")
-    setRACookies
+    resetToDefaultJson()
   } else {
     wingRoleJson = newJson
     console.log("cookies retrieved")
@@ -721,6 +721,27 @@ function generatePing() {
     text += " <@" + userId.value +">\r\n"
   }
   return text
+}
+
+function checkAndGetRaidersCookie() {
+  newJson = {}
+  var cookieExists = true
+  for (var i = 1; i <= 7; i++) {
+    raiderCookie = getCookie("raiders" + i)
+    if (!wingCookie) {
+      cookieExists = false
+      continue
+    }
+    var wingJson = JSON.parse(getCookie("wing" + i))
+    newJson["wing" + i] = wingJson
+  }
+  if (!cookieExists) {
+    console.log("No cookies set")
+    resetToDefaultJson()
+  } else {
+    wingRoleJson = newJson
+    console.log("cookies retrieved")
+  }
 }
 
 function copyToClipboard(text){

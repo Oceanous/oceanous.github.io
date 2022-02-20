@@ -5,30 +5,27 @@
     <script src="organizer.js"></script>
   </head>
   <body style="background-color:darkslategray;" color="white">
-    <h1 class="center-screen">RA Ping Organizer</h1>
+    <h1 class="center-screen">RA Ping Raider List</h1>
   <p><a href="/">main</a></p>  
   <p><a href="/roles">roles</a></p>
-      Wing:
-      <select id="wing" class="selects"> 
-        <option hidden disabled selected value> -- Select a wing -- </option>
-        <option value="wing1">Wing 1</option>
-        <option value="wing2">Wing 2</option>
-        <option value="wing3">Wing 3</option>
-        <option value="wing4">Wing 4</option>
-        <option value="wing5">Wing 5</option>
-        <option value="wing6">Wing 6</option>
-        <option value="wing7">Wing 7</option>
-      </select>
   
   <table id="table">
     <tr height="80">
-      <th>Avatar</th>
-      <th>Discord ID</th>
-      <th>Username</th>
-      <th id="Boss1" colspan="2">Boss 1</th>
-      <th id="Boss2" colspan="2">Boss 2</th>
-      <th id="Boss3" colspan="2">Boss 3</th>
-      <th id="Boss4" colspan="2">Boss 4</th>
+      <th id="raiderHeader" colspan="3">Raiders     
+        <select id="raiderSelect" class="selects"> 
+        <option hidden disabled selected value>-------</option>
+      </select>
+    </th>
+    </tr>
+    <tr>
+      <th> Enable </th>
+      <th> Name </th>
+      <th> Discord ID </th>
+    </tr>
+    <tr>
+      <th> <input type="checkbox" id="raiderEnable" disabled> </th>
+      <th> <input type="text" id="raiderNameText" disabled> </th>
+      <th> <input type="text" id="raiderIdText" disabled> </th>
     </tr>
   </table>
   </body>
