@@ -216,13 +216,14 @@ function setBosses(wing) {
   for (let i = 1; i <= 4; i++) {
     var boss = wingRoleJson[wing]["boss" + i]
     var bossDiv = document.getElementById("Boss" + i + "Div")
-    var bossEnable = document.createElement("input")
-    bossEnable.setAttribute('type', 'checkbox')
-    bossEnable.id = "boss" + i + "Enable"
-    bossDiv.appendChild(bossEnable)
+    var bossEnable = document.getElementById("Boss" + i + "Enable")
+    bossEnable.checked = true
+    bossEnable.disabled = false
     if (boss['name'] == null) {
       bossDiv.innerText = "N/A"
       noData = true
+      bossEnable.checked = false
+      bossEnable.disabled = true
     } else {
       bossDiv.innerText = boss['name']
     }
