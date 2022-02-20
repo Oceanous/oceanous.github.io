@@ -29,7 +29,7 @@ table.a {
 }
 .selects {
     color:white;
-	background-color: darkslateblue;
+	background-color: rgb(0, 92, 212);
 }
 body {
 	color:white;
@@ -41,7 +41,7 @@ a:link, a:visited {
     color: white;
 }
 a:hover {
-    color: red;
+    color: rgb(51, 132, 253);
 }
 
 
