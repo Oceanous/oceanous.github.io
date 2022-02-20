@@ -23,6 +23,10 @@ table.a {
     color:white;
 	background-color: black;
 }
+.disabledOptions {
+    color:grey;
+	background-color: black;
+}
 .selects {
     color:white;
 	background-color: darkslateblue;

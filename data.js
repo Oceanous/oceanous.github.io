@@ -35,7 +35,8 @@ var wingRoleJsonDefault = {
             { name:'Tank', value:"shield"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1SV3vg"
       },
       "boss2": {
         "name" : "Gorseval",
@@ -55,7 +56,8 @@ var wingRoleJsonDefault = {
           { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SV2gorse"
       },
       "boss3": {
         "name" : "Sabetha",
@@ -77,7 +79,8 @@ var wingRoleJsonDefault = {
           { name:'Cannons 2', value:"cannons2"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SV1sab"
       },
       "boss4": {
         "name" : null
@@ -106,7 +109,8 @@ var wingRoleJsonDefault = {
             { name:'Shroom', value:"shroom4"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1SP3sloth"
       },
       "boss2": {
         "name" : "Bandit Trio",
@@ -127,7 +131,8 @@ var wingRoleJsonDefault = {
           { name:'Saboteurs', value:"sabs"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SP2trio"
       },
       "boss3": {
         "name" : "Matthias",
@@ -147,7 +152,8 @@ var wingRoleJsonDefault = {
           { name:'Reflect', value:"reflect"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SP1matt"
       },
       "boss4": {
         "name" : null
@@ -173,7 +179,8 @@ var wingRoleJsonDefault = {
             { name:'Backwarg', value:"backwarg"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1SH3escort"
       },
       "boss2": {
         "name" : "Keep Construct",
@@ -194,7 +201,8 @@ var wingRoleJsonDefault = {
           { name:'Pusher', value:"pusher"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SH2kc"
       },
       "boss3": {
         "name" : "Twisted Castle",
@@ -213,7 +221,8 @@ var wingRoleJsonDefault = {
         "tags" : [
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "european_castle"
       },
       "boss4": {
         "name" : "Xera",
@@ -233,7 +242,8 @@ var wingRoleJsonDefault = {
           { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1SH1xera"
       }
     },
   
@@ -255,7 +265,8 @@ var wingRoleJsonDefault = {
           "tags" : [
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1BP4cairn"
       },
       "boss2": {
         "name" : "Mursaat Overseer",
@@ -277,7 +288,8 @@ var wingRoleJsonDefault = {
           { name:'Dispel', value:"dispel"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1BP3mo"
       },
       "boss3": {
         "name" : "Samarog",
@@ -296,7 +308,8 @@ var wingRoleJsonDefault = {
         "tags" : [
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1BP2sam"
       },
       "boss4": {
         "name" : "Deimos",
@@ -317,7 +330,8 @@ var wingRoleJsonDefault = {
           { name:'Oil Kite', value:"oilKite"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1BP1deimos"
       }
     },
   
@@ -341,7 +355,8 @@ var wingRoleJsonDefault = {
             { name:'Tank', value:"shield"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1HC3sh"
       },
       "boss2": {
         "name" : "Rivers",
@@ -360,7 +375,8 @@ var wingRoleJsonDefault = {
         "tags" : [
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "potable_water"
       },
       "boss3": {
         "name" : "Statues",
@@ -384,7 +400,8 @@ var wingRoleJsonDefault = {
           { name:'Throw', value:"throw2"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1HC2rrstatues"
       },
       "boss4": {
         "name" : "Dhuum",
@@ -407,7 +424,8 @@ var wingRoleJsonDefault = {
           { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1HC1dhuum"
       }
     },
   
@@ -433,7 +451,8 @@ var wingRoleJsonDefault = {
             { name:'Shields', value:"shield2"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1MG3ca"
       },
       "boss2": {
         "name" : "Twin Largos",
@@ -454,7 +473,8 @@ var wingRoleJsonDefault = {
           { name:'Tank', value:"tank2"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1MG2largos"
       },
       "boss3": {
         "name" : "Qadim",
@@ -477,7 +497,8 @@ var wingRoleJsonDefault = {
           { name:'Lamp', value:"lamp"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1MG1qadim"
       },
       "boss4": {
         "name" : null
@@ -504,7 +525,8 @@ var wingRoleJsonDefault = {
             { name:'Bubble', value:"bubble"}
           ],
           "disabledRoles" : [],
-          "disabledTags" : []
+          "disabledTags" : [],
+          "react" : "1KA2adina"
       },
       "boss2": {
         "name" : "Sabir",
@@ -523,7 +545,8 @@ var wingRoleJsonDefault = {
         "tags" : [
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1KA2sabir"
       },
       "boss3": {
         "name" : "Qadim the Peerless",
@@ -543,7 +566,8 @@ var wingRoleJsonDefault = {
           { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
-        "disabledTags" : []
+        "disabledTags" : [],
+        "react" : "1KA1qadim"
       },
       "boss4": {
         "name" : null

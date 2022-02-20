@@ -210,11 +210,16 @@ function setBosses(wing) {
   for (let i = 1; i <= 4; i++) {
     var boss = wingRoleJson[wing]["boss" + i]
     var bossNameHeader = document.getElementById("Boss" + i)
+    var bossDiv = document.getElementById("Boss" + i + "Div")
+    var bossEnable = document.createElement("input")
+    bossEnable.setAttribute('type', 'checkbox')
+    bossEnable.id = "boss" + i + "Enable"
+    bossDiv.appendChild(bossEnable)
     if (boss['name'] == null) {
-      bossNameHeader.innerText = "N/A"
+      bossDiv.innerText = "N/A"
       noData = true
     } else {
-      bossNameHeader.innerText = boss['name']
+      bossDiv.innerText = boss['name']
     }
     for(let j = 1; j <= 10; j++) {
       var roleBoss = document.getElementById("RoleBoss" + i + "User" + j)
@@ -272,6 +277,8 @@ function setRoleBosses() {
   addNoneOption(roleSelect)
   addNoneOption(tagSelect)
   clearRoleAndTagEditor()
+  setRoleButtons(true)
+  setTagButtons(true)
 
   for (let i = 1; i <= 4; i++) {
     var boss = wingRoleJson[this.value]["boss" + i]
@@ -291,6 +298,7 @@ function setRoles(ele) {
   var roleSelect = document.getElementById("roleSelect")
   clearOptions(roleSelect)
   addNoneOption(roleSelect)
+  setRoleButtons(false)
   var roleList = wingRoleJson[wingSelector.value][ele.value].roles
   for (let i = 0; i < roleList.length; i++) {
     var opt = document.createElement('option')
@@ -305,9 +313,9 @@ function setRoles(ele) {
   for (let i = 0; i < disabledRoleList.length; i++) {
     var opt = document.createElement('option')
     opt.id = "disabledRole" + i
-    opt.className = "options"
-    opt.text = roleList[i]['name']
-    opt.value = roleList[i]['value']
+    opt.className = "disabledOptions"
+    opt.text = disabledRoleList[i]['name']
+    opt.value = disabledRoleList[i]['value']
     opt.ena = false
     roleSelect.add(opt)
   }
@@ -318,6 +326,7 @@ function setTags(ele) {
   var tagSelect = document.getElementById("tagSelect")
   clearOptions(tagSelect)
   addNoneOption(tagSelect)
+  setTagButtons(false)
   var tagList = wingRoleJson[wingSelector.value][ele.value].tags
   for (let i = 0; i < tagList.length; i++) {
     var opt = document.createElement('option')
@@ -332,9 +341,9 @@ function setTags(ele) {
   for (let i = 0; i < disabledTagList.length; i++) {
     var opt = document.createElement('option')
     opt.id = "disabledTag" + i
-    opt.className = "options"
-    opt.text = roleList[i]['name']
-    opt.value = roleList[i]['value']
+    opt.className = "disabledOptions"
+    opt.text = disabledTagList[i]['name']
+    opt.value = disabledTagList[i]['value']
     opt.ena = false
     tagSelect.add(opt)
   }
@@ -342,6 +351,8 @@ function setTags(ele) {
 
 function setRolesAndTag() {
   setRoles(this)
+  setRoleButtons(false)
+  setTagButtons(false)
   setTags(this)
   clearRoleAndTagEditor()
 }
@@ -382,6 +393,29 @@ function tagEditorSelect() {
 }
 
 function clearRoleAndTagEditor() {
+  clearRoleEditor()
+  clearTagEditor()
+}
+
+function setRoleButtons(disabled) {
+  var roleAdd = document.getElementById("roleAdd")
+  roleAdd.disabled = disabled
+  var roleDelete = document.getElementById("roleDelete")
+  roleDelete.disabled = disabled
+  var roleSubmit = document.getElementById("roleSubmit")
+  roleSubmit.disabled = disabled
+}
+ 
+function setTagButtons(disabled) {
+  var tagAdd = document.getElementById("tagAdd")
+  tagAdd.disabled = disabled
+  var tagDelete = document.getElementById("tagDelete")
+  tagDelete.disabled = disabled
+  var tagSubmit = document.getElementById("tagSubmit")
+  tagSubmit.disabled = disabled
+}
+
+function clearRoleEditor() {
   var roleEnable = document.getElementById("roleEnable")
   roleEnable.disabled = true
   roleEnable.checked = false
@@ -391,6 +425,9 @@ function clearRoleAndTagEditor() {
   var roleReactText = document.getElementById("roleReactText")
   roleReactText.disabled = true
   roleReactText.value = ""
+}
+
+function clearTagEditor() {
   var tagEnable = document.getElementById("tagEnable")
   tagEnable.disabled = true
   tagEnable.checked = false
@@ -409,6 +446,7 @@ function checkAndGetCookie() {
     wingCookie = getCookie("wing" + i)
     if (!wingCookie) {
       cookieExists = false
+      continue
     }
     var wingJson = JSON.parse(getCookie("wing" + i))
     newJson["wing" + i] = wingJson
@@ -450,8 +488,83 @@ function setRole() {
   opt.text = nameBox.value
   opt.value = reactBox.value
   opt.ena = enableBox.checked
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
   updateRoles()
+  setRoles(document.getElementById("bossRoles"))
+  clearRoleEditor()
 }
+
+function addRole() {
+  var roleSelector = document.getElementById("roleSelect")
+  var enableBox = document.getElementById("roleEnable")
+  var nameBox = document.getElementById("roleNameText")
+  var reactBox = document.getElementById("roleReactText")
+
+  var opt = document.createElement('option')
+  opt.selected = true
+  opt.text = "New Role"
+  nameBox.value = "New Role"
+  opt.value = "React"
+  reactBox.value = "React"
+  opt.ena = false
+  enableBox.checked = false
+  roleSelector.add(opt)
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
+  updateRoles()
+  setRoles(document.getElementById("bossRoles"))
+  clearRoleEditor()
+}
+
+function removeRole() {
+  var roleSelector = document.getElementById("roleSelect")
+  roleSelector.remove(roleSelector.selectedIndex)
+
+  updateRoles()
+  setRoles(document.getElementById("bossRoles"))
+  clearRoleEditor()
+}
+
+function removeTag() {
+  var tagSelector = document.getElementById("tagSelect")
+  tagSelector.remove(tagSelector.selectedIndex)
+
+  updateTags()
+  setTags(document.getElementById("bossRoles"))
+  clearRoleEditor()
+}
+
+function addTag() {
+  var tagSelector = document.getElementById("tagSelect")
+  var enableBox = document.getElementById("tagEnable")
+  var nameBox = document.getElementById("tagNameText")
+  var reactBox = document.getElementById("tagReactText")
+
+  var opt = document.createElement('option')
+  opt.selected = true
+  opt.text = "New Tag"
+  nameBox.value = "New Tag"
+  opt.value = "React"
+  reactBox.value = "React"
+  opt.ena = false
+  enableBox.checked = false
+  tagSelector.add(opt)
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
+  updateTags()
+  setTags(document.getElementById("bossRoles"))
+  clearTagEditor()
+ }
 
 function setTag() {
   var tagSelector = document.getElementById("tagSelect")
@@ -463,7 +576,14 @@ function setTag() {
   opt.text = nameBox.value
   opt.value = reactBox.value
   opt.ena = enableBox.checked
-  updateRoles()
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
+  updateTags()
+  setTags(document.getElementById("bossRoles"))
+  clearTagEditor()
 }
 
 function updateRoles() {
@@ -476,6 +596,9 @@ function updateRoles() {
   disabledRoleList = []
   for (var i = 0; i < roleSelector.options.length; i++) {
     var opt = roleSelector.options[i]
+    if (opt.value == "None") {
+      continue
+    }
     var jsonRole = new Object()
     jsonRole.name = opt.text
     jsonRole.value = opt.value
@@ -500,6 +623,9 @@ function updateTags() {
   disabledTagList = []
   for (var i = 0; i < tagSelector.options.length; i++) {
     var opt = tagSelector.options[i]
+    if (opt.value == "None") {
+      continue
+    }
     var jsonRole = new Object()
     jsonRole.name = opt.text
     jsonRole.value = opt.value
@@ -518,14 +644,13 @@ function showSnackbar() {
   var x = document.getElementById("snackbar");
   x.className = "show";
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-  generatePing()
+  copyToClipboard(generatePing())
 }
 
 function setCookie(cName, cValue, expDays) {
   let date = new Date();
   date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
   const expires = "expires=" + date.toUTCString();
-  console.log(expires)
   document.cookie = cName + "=" + cValue + "; " + expires + ";";
 }
 
@@ -535,12 +660,40 @@ function resetToDefaultJson() {
 }
 
 function generatePing() {
-  var text = ""
+  var text = "|"
   var wing = document.getElementById("wing").value
+  var tagsSet = [false, false, false, false, false]
+  var nums = [":zero:", ":one:", ":two:", ":three:", ":four:"]
+  for (var k = 1; k <= 4; k++) {
+    var boss = wingRoleJson[wing]["boss" + k]
+    var bossEnable = document.getElementById("Boss" + k + "Enable")
+    if (boss["name"] == null || bossEnable.checked == false) {
+      continue
+    } else {
+      for (var l = 1; l <= 10; l++) {
+        var tagElement = document.getElementById("TagBoss" + k + "User" + l)
+        if (tagElement.value != "None") {
+          tagsSet[k] = true
+        }
+      }
+      if (wingRoleJson[wing]["boss" +k]["react"]) {
+        text += ":" + wingRoleJson[wing]["boss" + k]["react"] + ":"
+      } else {
+        text += nums[k]
+      }
+      if (tagsSet[k]) {
+        text += ":black_large_square:"
+      }
+    }   
+    text += "|"
+  }
+  text += "\r\n"
   for (var i = 1; i <= 10; i++) {
+    text += "|"
     for (var j = 1; j <= 4; j++) {
       var boss = wingRoleJson[wing]["boss" + j]
-      if (boss["name"] == null) {
+      var bossEnable = document.getElementById("Boss" + j + "Enable")
+      if (boss["name"] == null || bossEnable.checked == false) {
         continue
       }
       var bossRole = document.getElementById("RoleBoss" + j + "User" + i)
@@ -550,6 +703,11 @@ function generatePing() {
         var selectedReact = bossRole.options[bossRole.selectedIndex].react
         text += ":" + selectedReact + ":"
       }
+      if (!tagsSet[j]) {
+        text += "|"
+        continue
+      }
+
       var bossTag = document.getElementById("TagBoss" + j + "User" + i)
       if (bossTag.value == "None") {
         text += ":black_large_square:"
@@ -562,7 +720,11 @@ function generatePing() {
     var userId = document.getElementById("User" + i)
     text += " <@" + userId.value +">\r\n"
   }
-  console.log(text)
+  return text
+}
+
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text);
 }
 
 function mainOnload () {
@@ -585,4 +747,6 @@ function rolesOnload () {
   roleSelector.addEventListener('change', roleEditorSelect)
   var tagSelector = document.getElementById("tagSelect")
   tagSelector.addEventListener('change', tagEditorSelect)
+  setRoleButtons(true)
+  setTagButtons(true)
 }
