@@ -1,4 +1,5 @@
-var knownRaiders = [
+var knownRaiders = []
+var knownRaidersDefault = [
     { name: "Meito", value: "629992107783880705"},
     { name: "Oceanous", value: "268363012493017089"},
     { name: "Cloud", value: "134873718324199425"},
@@ -14,6 +15,7 @@ var knownRaiders = [
 ]
 
 var afkRaiders = []
+var afkRaidersDefault = []
 
 var dataList
 

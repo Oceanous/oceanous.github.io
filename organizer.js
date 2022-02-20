@@ -812,8 +812,8 @@ function resetToDefaultJson() {
 }
 
 function resetToDefaultRaiders() {
-  knownRaiders = []
-  afkRaiders = []
+  knownRaiders = knownRaidersDefault
+  afkRaiders = afkRaidersDefault
   setRaiderCookie()
 }
 
