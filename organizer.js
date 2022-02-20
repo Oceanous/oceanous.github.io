@@ -6,8 +6,6 @@ async function catFact() {
 
 async function getUserData(userId, userNumber) {
   let data = {userId:`${userId}`}
-  console.log(userId)
-  console.log(JSON.stringify(data))
   let response = await fetch(`https://2xtju1ecpi.execute-api.us-west-1.amazonaws.com/DiscordProxy`, {
     method: 'POST',
     headers: {
@@ -18,7 +16,8 @@ async function getUserData(userId, userNumber) {
   let image = document.getElementById("Avatar" + userNumber)
   let name = document.getElementById("Name" + userNumber)
   let resp = await response.json()
-  if (resp.code != null && resp.code == 0) {
+  console.log(resp)
+  if ((resp.code != null && resp.code == 0) || resp.user_id) {
     image.src = "assets/defaultAvatar.png"
     name.innerHTML = "Couldn't find user"
     return
@@ -34,6 +33,10 @@ function idEntered(e) {
   if(code == 13) { //Enter keycode
     getUserData(this.value, this.id)
   }
+}
+
+function onDiscordIdChange(e) {
+  getUserData(this.value, this.id)
 }
 
 function somethingSelected(e) {
@@ -80,6 +83,8 @@ var raiderList = document.createElement("datalist")
 raiderList.id = "raiderList"
 
 function populateUsers() {
+  raiderList = document.createElement("datalist")
+  raiderList.id = "raiderList"
   for (var i = 0; i < knownRaiders.length; i++) {
     var opt = document.createElement('option')
     opt.value = knownRaiders[i].value
@@ -120,7 +125,8 @@ function populateTable() {
     discordId.setAttribute('list', 'raiderList')
     discordId.className = "selects"
     discordId.id = "User" + i
-    discordId.addEventListener('keypress', idEntered)
+    // discordId.addEventListener('keypress', idEntered)
+    discordId.addEventListener('change', onDiscordIdChange)
     discordId.appendChild(raiderList)
     discordIdCell.appendChild(discordId)
 
@@ -209,7 +215,6 @@ function setBosses(wing) {
   var noData = false
   for (let i = 1; i <= 4; i++) {
     var boss = wingRoleJson[wing]["boss" + i]
-    var bossNameHeader = document.getElementById("Boss" + i)
     var bossDiv = document.getElementById("Boss" + i + "Div")
     var bossEnable = document.createElement("input")
     bossEnable.setAttribute('type', 'checkbox')
@@ -349,6 +354,33 @@ function setTags(ele) {
   }
 }
 
+function setRaiders() {
+  var raiderSelect = document.getElementById("raiderSelect")
+  clearOptions(raiderSelect)
+  addNoneOption(raiderSelect)
+  setRaiderButtons(false)
+  var raiderList = knownRaiders
+  for (let i = 0; i < raiderList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "raider" + i
+    opt.className = "options"
+    opt.text = raiderList[i]['name']
+    opt.value = raiderList[i]['value']
+    opt.ena = true
+    raiderSelect.add(opt)
+  }
+  var disabledRaiderList = afkRaiders
+  for (let i = 0; i < disabledRaiderList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "disabledRole" + i
+    opt.className = "disabledOptions"
+    opt.text = disabledRaiderList[i]['name']
+    opt.value = disabledRaiderList[i]['value']
+    opt.ena = false
+    raiderSelect.add(opt)
+  }
+}
+
 function setRolesAndTag() {
   setRoles(this)
   setRoleButtons(false)
@@ -392,6 +424,19 @@ function tagEditorSelect() {
   reactText.value = this.value
 }
 
+function raiderEditorSelect() {
+  var raiderEnable = document.getElementById("raiderEnable")
+  raiderEnable.disabled = false
+  raiderEnable.checked = false
+  raiderEnable.checked = this.options[this.selectedIndex].ena
+  var raiderNameText = document.getElementById("raiderNameText")
+  var raiderIdText = document.getElementById("raiderIdText")
+  raiderNameText.disabled = false
+  raiderIdText.disabled = false
+  raiderNameText.value = this.options[this.selectedIndex].text
+  raiderIdText.value = this.value
+}
+
 function clearRoleAndTagEditor() {
   clearRoleEditor()
   clearTagEditor()
@@ -413,6 +458,15 @@ function setTagButtons(disabled) {
   tagDelete.disabled = disabled
   var tagSubmit = document.getElementById("tagSubmit")
   tagSubmit.disabled = disabled
+}
+
+function setRaiderButtons(disabled) {
+  var raiderAdd = document.getElementById("raiderAdd")
+  raiderAdd.disabled = disabled
+  var raiderDelete = document.getElementById("raiderDelete")
+  raiderDelete.disabled = disabled
+  var raiderSubmit = document.getElementById("raiderSubmit")
+  raiderSubmit.disabled = disabled
 }
 
 function clearRoleEditor() {
@@ -437,6 +491,18 @@ function clearTagEditor() {
   var tagReactText = document.getElementById("tagReactText")
   tagReactText.disabled = true
   tagReactText.value = ""
+}
+
+function clearRaiderEditor() {
+  var raiderEnable = document.getElementById("raiderEnable")
+  raiderEnable.disabled = true
+  raiderEnable.checked = false
+  var raiderNameText = document.getElementById("raiderNameText")
+  raiderNameText.disabled = true
+  raiderNameText.value = ""
+  var raiderIdText = document.getElementById("raiderIdText")
+  raiderIdText.disabled = true
+  raiderIdText.value = ""
 }
 
 function checkAndGetCookie() {
@@ -476,6 +542,13 @@ function setRACookies() {
   for (var i = 0; i < keys.length; i++) {
     setCookie(keys[i], JSON.stringify(wingRoleJson[keys[i]]), 30)
   }
+}
+
+function setRaiderCookie() {
+  var json = {}
+  json["knownRaiders"] = knownRaiders
+  json["afkRaiders"] = afkRaiders
+  setCookie("raiders", JSON.stringify(json), 30)
 }
 
 function setRole() {
@@ -586,6 +659,84 @@ function setTag() {
   clearTagEditor()
 }
 
+function removeRaider() {
+  var raiderSelector = document.getElementById("raiderSelect")
+  raiderSelector.remove(raiderSelector.selectedIndex)
+
+  updateRaiders()
+  setRaiders()
+  clearRaiderEditor()
+}
+
+function addRaider() {
+  var raiderSelector = document.getElementById("raiderSelect")
+  var enableBox = document.getElementById("raiderEnable")
+  var nameBox = document.getElementById("raiderNameText")
+  var idBox = document.getElementById("raiderIdText")
+
+  var opt = document.createElement('option')
+  opt.selected = true
+  opt.text = "New Raider"
+  nameBox.value = "New Raider"
+  opt.value = "Id"
+  idBox.value = "Id"
+  opt.ena = false
+  enableBox.checked = false
+  raiderSelector.add(opt)
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
+  updateRaiders()
+  setRaiders()
+  clearRaiderEditor()
+ }
+
+function setRaider() {
+  var raiderSelector = document.getElementById("raiderSelect")
+  var opt = raiderSelector.options[raiderSelector.selectedIndex]
+  var enableBox = document.getElementById("raiderEnable")
+  var nameBox = document.getElementById("raiderNameText")
+  var idBox = document.getElementById("raiderIdText")
+
+  opt.text = nameBox.value
+  opt.value = idBox.value
+  opt.ena = enableBox.checked
+  if (enableBox.checked) {
+    opt.className = "options"
+  } else {
+    opt.className = "disabledOptions"
+  }
+  updateRaiders()
+  setRaiders()
+  clearRaiderEditor()
+}
+
+
+function updateRaiders() {
+  var raiderSelector = document.getElementById("raiderSelect")
+  var raiderList = []
+  var afkRaiderList = []
+  for (var i = 0; i < raiderSelector.options.length; i++) {
+    var opt = raiderSelector.options[i]
+    if (opt.value == "None") {
+      continue
+    }
+    var jsonRole = new Object()
+    jsonRole.name = opt.text
+    jsonRole.value = opt.value
+    if (opt.ena) {
+      raiderList.push(jsonRole)
+    } else {
+      afkRaiderList.push(jsonRole)
+    }
+  }
+  knownRaiders = raiderList
+  afkRaiders = afkRaiderList
+  setRaiderCookie()
+}
+
 function updateRoles() {
   var wingSelector = document.getElementById("wingRoles")
   var bossSelector = document.getElementById("bossRoles")
@@ -659,6 +810,12 @@ function resetToDefaultJson() {
   setRACookies()
 }
 
+function resetToDefaultRaiders() {
+  knownRaiders = []
+  afkRaiders = []
+  setRaiderCookie()
+}
+
 function generatePing() {
   var text = "|"
   var wing = document.getElementById("wing").value
@@ -724,23 +881,17 @@ function generatePing() {
 }
 
 function checkAndGetRaidersCookie() {
-  newJson = {}
-  var cookieExists = true
-  for (var i = 1; i <= 7; i++) {
-    raiderCookie = getCookie("raiders" + i)
-    if (!wingCookie) {
-      cookieExists = false
-      continue
-    }
-    var wingJson = JSON.parse(getCookie("wing" + i))
-    newJson["wing" + i] = wingJson
-  }
-  if (!cookieExists) {
-    console.log("No cookies set")
-    resetToDefaultJson()
+  var raiderCookie = getCookie("raiders")
+  if (raiderCookie) {
+    var jsonCookie = JSON.parse(raiderCookie)
+    knownRaiders = jsonCookie["knownRaiders"]
+    console.log(knownRaiders)
+    afkRaiders = jsonCookie["afkRaiders"]
+    console.log(afkRaiders)
+    console.log("raider cookie retrieved")
   } else {
-    wingRoleJson = newJson
-    console.log("cookies retrieved")
+    console.log("No raider cookie set")
+    resetToDefaultRaiders()
   }
 }
 
@@ -750,6 +901,7 @@ function copyToClipboard(text){
 
 function mainOnload () {
   checkAndGetCookie()
+  checkAndGetRaidersCookie()
   populateUsers()
   populateTable()
   var wingSelector = document.getElementById("wing")
@@ -770,4 +922,13 @@ function rolesOnload () {
   tagSelector.addEventListener('change', tagEditorSelect)
   setRoleButtons(true)
   setTagButtons(true)
+}
+
+function raidersOnload () {
+  checkAndGetRaidersCookie()
+  var raiderSelector = document.getElementById("raiderSelect")
+  raiderSelector.addEventListener('change', raiderEditorSelect)
+  setRaiderButtons(false)
+  setRaiders()
+  clearRaiderEditor()
 }

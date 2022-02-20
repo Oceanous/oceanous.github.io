@@ -13,6 +13,8 @@ var knownRaiders = [
     { name: "Aerin", value: "336275612865921025"},
 ]
 
+var afkRaiders = []
+
 var dataList
 
 var wingRoleJsonDefault = {
@@ -75,8 +77,8 @@ var wingRoleJsonDefault = {
         ],
         "tags" : [
           { name:'Flak Kite', value:"kite"},
-          { name:'Cannons 1', value:"cannons1"},
-          { name:'Cannons 2', value:"cannons2"}
+          { name:'Cannons', value:"MagBomb"},
+          { name:'Cannons', value:"MagBomb"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -103,10 +105,10 @@ var wingRoleJsonDefault = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-            { name:'Shroom', value:"shroom1"},
-            { name:'Shroom', value:"shroom2"},
-            { name:'Shroom', value:"shroom3"},
-            { name:'Shroom', value:"shroom4"}
+            { name:'Shroom', value:"mushroom"},
+            { name:'Shroom', value:"mushroom"},
+            { name:'Shroom', value:"mushroom"},
+            { name:'Shroom', value:"mushroom"}
           ],
           "disabledRoles" : [],
           "disabledTags" : [],
@@ -127,8 +129,8 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Mortars', value:"mortars"},
-          { name:'Saboteurs', value:"sabs"}
+          { name:'Mortars', value:"MagBomb"},
+          { name:'Saboteurs', value:"spy"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -149,7 +151,7 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Reflect', value:"reflect"}
+          { name:'Reflect', value:"mirror"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -176,7 +178,7 @@ var wingRoleJsonDefault = {
             { name:'Tower', value:"0_mesmer_chronomancer" }
           ],
           "tags" : [
-            { name:'Backwarg', value:"backwarg"}
+            { name:'Backwarg', value:"dog"}
           ],
           "disabledRoles" : [],
           "disabledTags" : [],
@@ -197,8 +199,7 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"shield"},
-          { name:'Pusher', value:"pusher"}
+          { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -283,9 +284,9 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Claim', value:"claim"},
-          { name:'Protect', value:"protect"},
-          { name:'Dispel', value:"dispel"}
+          { name:'Claim', value:"regional_indicator_c"},
+          { name:'Protect', value:"regional_indicator_p"},
+          { name:'Dispel', value:"regional_indicator_d"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -327,7 +328,7 @@ var wingRoleJsonDefault = {
         ],
         "tags" : [
           { name:'Tank', value:"shield"},
-          { name:'Oil Kite', value:"oilKite"}
+          { name:'Oil Kite', value:"oil"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -394,10 +395,10 @@ var wingRoleJsonDefault = {
         ],
         "tags" : [
           { name:'Tank', value:"shield"},
-          { name:'Stun', value:"stun1"},
-          { name:'Stun', value:"stun2"},
-          { name:'Throw', value:"throw1"},
-          { name:'Throw', value:"throw2"}
+          { name:'Stun', value:"white_circle"},
+          { name:'Stun', value:"white_circle"},
+          { name:'Throw', value:"comet"},
+          { name:'Throw', value:"comet"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -418,12 +419,14 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Green 1', value:"g1"},
-          { name:'Green 2', value:"g2"},
-          { name:'Green 3', value:"g3"},
+          { name:'Green 1', value:"one"},
+          { name:'Green 2', value:"two"},
+          { name:'Green 3', value:"three"},
           { name:'Tank', value:"shield"}
         ],
-        "disabledRoles" : [],
+        "disabledRoles" : [
+          { name:'Tank G3', value:"shield"}
+        ],
         "disabledTags" : [],
         "react" : "1HC1dhuum"
       }
@@ -445,10 +448,10 @@ var wingRoleJsonDefault = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-            { name:'Swords', value:"sword1"},
-            { name:'Swords', value:"sword2"},
-            { name:'Shields', value:"shield1"},
-            { name:'Shields', value:"shield2"}
+            { name:'Swords', value:"knife"},
+            { name:'Swords', value:"knife"},
+            { name:'Shields', value:"shield"},
+            { name:'Shields', value:"shield"}
           ],
           "disabledRoles" : [],
           "disabledTags" : [],
@@ -469,8 +472,8 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank1"},
-          { name:'Tank', value:"tank2"}
+          { name:'Tank', value:"shield"},
+          { name:'Tank', value:"shield"}
         ],
         "disabledRoles" : [],
         "disabledTags" : [],
@@ -491,12 +494,14 @@ var wingRoleJsonDefault = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Mat Tank', value:"matTank"},
+          { name:'Mat Tank', value:"dragon_face"},
           { name:'Tank', value:"shield"},
           { name:'Lamp', value:"lamp"},
           { name:'Lamp', value:"lamp"}
         ],
-        "disabledRoles" : [],
+        "disabledRoles" : [
+          { name:'Firebrand', value:"0_guardian_firebrand"}
+        ],
         "disabledTags" : [],
         "react" : "1MG1qadim"
       },
@@ -522,7 +527,7 @@ var wingRoleJsonDefault = {
           ],
           "tags" : [
             { name:'Tank', value:"shield"},
-            { name:'Bubble', value:"bubble"}
+            { name:'Bubble', value:"bubble_tea"}
           ],
           "disabledRoles" : [],
           "disabledTags" : [],
@@ -545,7 +550,9 @@ var wingRoleJsonDefault = {
         "tags" : [
         ],
         "disabledRoles" : [],
-        "disabledTags" : [],
+        "disabledTags" : [
+          { name:'Wisps', value:"cloud_lightning"}
+        ],
         "react" : "1KA2sabir"
       },
       "boss3": {
@@ -575,7 +582,7 @@ var wingRoleJsonDefault = {
     }
   }
 
-  var reactIconMap = {
+var reactIconMap = {
       "0_ranger_druid" : "assets/druid.webp",
       "Quickness" : "assets/quickness.webp",
       "Alacrity" : "assets/alacrity.webp",
@@ -586,6 +593,6 @@ var wingRoleJsonDefault = {
       "kite" : "assets/kite.svg",
       "0_elementalist_tempest" : "assets/tempest.webp",
       "0_mesmer_chronomancer" : "assets/chrono.webp",
-      "matTank" : "assets/dragFace.svg",
-      "lamp" : "assets/lamp.svg"
-  }
+      "dragon_face" : "assets/dragFace.svg",
+      "lamp" : "assets/lamp.svg",
+}

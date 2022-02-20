@@ -4,7 +4,7 @@
     <script src="data.js"></script>
     <script src="organizer.js"></script>
   </head>
-  <body style="background-color:darkslategray;" color="white">
+  <body onload="raidersOnload()" style="background-color:darkslategray;" color="white">
     <h1 class="center-screen">RA Ping Raider List</h1>
   <p><a href="/">main</a></p>  
   <p><a href="/roles">roles</a></p>
@@ -13,7 +13,7 @@
     <tr height="80">
       <th id="raiderHeader" colspan="3">Raiders     
         <select id="raiderSelect" class="selects"> 
-        <option hidden disabled selected value>-------</option>
+        <!-- <option hidden disabled selected value>-------</option> -->
       </select>
     </th>
     </tr>
@@ -27,5 +27,13 @@
       <th> <input type="text" id="raiderNameText" disabled> </th>
       <th> <input type="text" id="raiderIdText" disabled> </th>
     </tr>
+    <tr>
+      <th> <input id="raiderAdd" type="button" class="selects" value="Add a Raider" onclick="addRaider()"> </th>
+      <th> <input id="raiderDelete" type="button" class="selects" value="Remove Raider" onclick="removeRaider()"> </th>      
+      <th> <input id="raiderSubmit" type="button" class="selects" value="Save Raider" onclick="setRaider()"> </th>
+    </tr>
   </table>
+
+  <input id="resetRaiders" type="button" class="selects" value="Reset to default raiders" onclick="resetToDefaultRaiders()">
+
   </body>
