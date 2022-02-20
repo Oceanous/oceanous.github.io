@@ -1,4 +1,21 @@
-var wingRoleJson = {
+var knownRaiders = [
+    { name: "Meito", value: "629992107783880705"},
+    { name: "Oceanous", value: "268363012493017089"},
+    { name: "Cloud", value: "134873718324199425"},
+    { name: "Abraxus", value: "535273074048892946"},
+    { name: "Ninya", value: "150713541236621312"},
+    { name: "John", value: "229575872342917120"},
+    { name: "Top Gun", value: "252747030365995009"},
+    { name: "Muca", value: "184842730839605248"},
+    { name: "Bored", value: "335016216316084224"},
+    { name: "Mush", value: "202479353001410560"},
+    { name: "Mason", value: "128307570799673344"},
+    { name: "Aerin", value: "336275612865921025"},
+]
+
+var dataList
+
+var wingRoleJsonDefault = {
     "wing1" : {
       "boss1": {
           "name" : "Vale Guardian",
@@ -15,8 +32,10 @@ var wingRoleJson = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-            { name:'Tank', value:"tank"}
-          ]
+            { name:'Tank', value:"shield"}
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Gorseval",
@@ -33,8 +52,10 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"}
-        ]
+          { name:'Tank', value:"shield"}
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Sabetha",
@@ -54,7 +75,9 @@ var wingRoleJson = {
           { name:'Flak Kite', value:"kite"},
           { name:'Cannons 1', value:"cannons1"},
           { name:'Cannons 2', value:"cannons2"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : null
@@ -81,7 +104,9 @@ var wingRoleJson = {
             { name:'Shroom', value:"shroom2"},
             { name:'Shroom', value:"shroom3"},
             { name:'Shroom', value:"shroom4"}
-          ]
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Bandit Trio",
@@ -100,7 +125,9 @@ var wingRoleJson = {
         "tags" : [
           { name:'Mortars', value:"mortars"},
           { name:'Saboteurs', value:"sabs"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Matthias",
@@ -118,7 +145,9 @@ var wingRoleJson = {
         ],
         "tags" : [
           { name:'Reflect', value:"reflect"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : null
@@ -138,11 +167,13 @@ var wingRoleJson = {
             { name:'DPS', value:"crossed_swords" },
             { name:'DPS', value:"crossed_swords" },
             { name:'DPS', value:"crossed_swords" },
-            { name:'Tower', value:"tower" }
+            { name:'Tower', value:"0_mesmer_chronomancer" }
           ],
           "tags" : [
             { name:'Backwarg', value:"backwarg"}
-          ]
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Keep Construct",
@@ -159,9 +190,11 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"},
+          { name:'Tank', value:"shield"},
           { name:'Pusher', value:"pusher"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Twisted Castle",
@@ -178,7 +211,9 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : "Xera",
@@ -195,8 +230,10 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"}
-        ]
+          { name:'Tank', value:"shield"}
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       }
     },
   
@@ -216,7 +253,9 @@ var wingRoleJson = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-          ]
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Mursaat Overseer",
@@ -236,7 +275,9 @@ var wingRoleJson = {
           { name:'Claim', value:"claim"},
           { name:'Protect', value:"protect"},
           { name:'Dispel', value:"dispel"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Samarog",
@@ -253,7 +294,9 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : "Deimos",
@@ -262,7 +305,7 @@ var wingRoleJson = {
           { name:'Quickness', value:"Quickness" },
           { name:'Quickness', value:"Quickness" },
           { name:'Alacrity', value:"Alacrity" },
-          { name:'Hand Kite', value:"handKite" },
+          { name:'Hand Kite', value:"kite" },
           { name:'Banners', value:"0_warrior_berserker" },
           { name:'DPS', value:"crossed_swords" },
           { name:'DPS', value:"crossed_swords" },
@@ -270,9 +313,11 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"},
+          { name:'Tank', value:"shield"},
           { name:'Oil Kite', value:"oilKite"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       }
     },
   
@@ -292,9 +337,11 @@ var wingRoleJson = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-            { name:'Tank', value:"tank1"},
-            { name:'Tank', value:"tank2"}
-          ]
+            { name:'Tank', value:"shield"},
+            { name:'Tank', value:"shield"}
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Rivers",
@@ -303,7 +350,7 @@ var wingRoleJson = {
           { name:'Quickness', value:"Quickness" },
           { name:'Quickness', value:"Quickness" },
           { name:'Alacrity', value:"Alacrity" },
-          { name:'Superspeed', value:"superspeed" },
+          { name:'Superspeed', value:"0_engineer_scrapper" },
           { name:'DPS', value:"crossed_swords" },
           { name:'DPS', value:"crossed_swords" },
           { name:'DPS', value:"crossed_swords" },
@@ -311,7 +358,9 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Statues",
@@ -328,13 +377,14 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"},
+          { name:'Tank', value:"shield"},
           { name:'Stun', value:"stun1"},
           { name:'Stun', value:"stun2"},
           { name:'Throw', value:"throw1"},
           { name:'Throw', value:"throw2"}
-  
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : "Dhuum",
@@ -354,8 +404,10 @@ var wingRoleJson = {
           { name:'Green 1', value:"g1"},
           { name:'Green 2', value:"g2"},
           { name:'Green 3', value:"g3"},
-          { name:'Tank', value:"tank"}
-        ]
+          { name:'Tank', value:"shield"}
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       }
     },
   
@@ -379,7 +431,9 @@ var wingRoleJson = {
             { name:'Swords', value:"sword2"},
             { name:'Shields', value:"shield1"},
             { name:'Shields', value:"shield2"}
-          ]
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Twin Largos",
@@ -398,13 +452,15 @@ var wingRoleJson = {
         "tags" : [
           { name:'Tank', value:"tank1"},
           { name:'Tank', value:"tank2"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Qadim",
         "roles" : [
           { name:'Druid', value:"0_ranger_druid" },
-          { name:'Quickness', value:"quick" },
+          { name:'Quickness', value:"Quickness" },
           { name:'Chrono', value:"0_mesmer_chronomancer" },
           { name:'Alacrity', value:"Alacrity" },
           { name:'Banners', value:"0_warrior_berserker" },
@@ -416,10 +472,12 @@ var wingRoleJson = {
         ],
         "tags" : [
           { name:'Mat Tank', value:"matTank"},
-          { name:'Tank', value:"tank"},
+          { name:'Tank', value:"shield"},
           { name:'Lamp', value:"lamp"},
           { name:'Lamp', value:"lamp"}
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : null
@@ -442,9 +500,11 @@ var wingRoleJson = {
             { name:'DPS', value:"crossed_swords" }
           ],
           "tags" : [
-            { name:'Tank', value:"tank"},
+            { name:'Tank', value:"shield"},
             { name:'Bubble', value:"bubble"}
-          ]
+          ],
+          "disabledRoles" : [],
+          "disabledTags" : []
       },
       "boss2": {
         "name" : "Sabir",
@@ -461,7 +521,9 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-        ]
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss3": {
         "name" : "Qadim the Peerless",
@@ -478,8 +540,10 @@ var wingRoleJson = {
           { name:'DPS', value:"crossed_swords" }
         ],
         "tags" : [
-          { name:'Tank', value:"tank"}
-        ]
+          { name:'Tank', value:"shield"}
+        ],
+        "disabledRoles" : [],
+        "disabledTags" : []
       },
       "boss4": {
         "name" : null

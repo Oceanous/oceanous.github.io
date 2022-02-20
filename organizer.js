@@ -16,10 +16,14 @@ async function getUserData(userId, userNumber) {
     body: JSON.stringify(data),
   });
   let image = document.getElementById("Avatar" + userNumber)
-  let resp = await response.json()
-  console.log(resp)
-  image.src = `https://cdn.discordapp.com/avatars/${userId}/${resp.avatar}` + "?size=64"
   let name = document.getElementById("Name" + userNumber)
+  let resp = await response.json()
+  if (resp.code != null && resp.code == 0) {
+    image.src = "assets/defaultAvatar.png"
+    name.innerHTML = "Couldn't find user"
+    return
+  }
+  image.src = `https://cdn.discordapp.com/avatars/${userId}/${resp.avatar}` + "?size=64"
   console.log(userNumber)
   name.innerHTML = resp.username
 }
@@ -37,10 +41,13 @@ function somethingSelected(e) {
   previousOptionValueJson[this.column + this.user] = this.value
   var selectedImage = document.getElementById(this.column + this.user + "Image")
   var selectedReact = this.options[this.selectedIndex].react
+  console.log(selectedReact)
   if (selectedReact && selectedReact in reactIconMap) {
     selectedImage.src = reactIconMap[selectedReact]
     selectedImage.style.display = "inline"
-  } 
+  } else {
+    selectedImage.style.display = "none"
+  }
   for (var i = 1; i <= 10; i++) {
     var otherUserSelect = document.getElementById(this.column + i)
     if (i == this.user || otherUserSelect == null) {
@@ -69,6 +76,30 @@ function initiatePrevOptions() {
   }
 }
 initiatePrevOptions()
+var raiderList = document.createElement("datalist")
+raiderList.id = "raiderList"
+
+function populateUsers() {
+  for (var i = 0; i < knownRaiders.length; i++) {
+    var opt = document.createElement('option')
+    opt.value = knownRaiders[i].value
+    // opt.label = knownRaiders[i].name
+    opt.text = knownRaiders[i].name
+    raiderList.appendChild(opt)
+  }
+}
+
+function addNoneOption(ele) {
+  var opt = document.createElement('option')
+  opt.id = ele.id + "OptionNone"
+  opt.className = "options"
+  opt.value = "None"
+  opt.disabled = true
+  opt.hidden = true
+  opt.selected = true
+  opt.text = "-------"
+  ele.appendChild(opt)
+}
 
 function populateTable() {
   var table = document.getElementById("table")
@@ -86,9 +117,11 @@ function populateTable() {
     var discordIdCell = row.insertCell(1)
     var discordId = document.createElement('input')
     discordId.setAttribute('type', 'text')
+    discordId.setAttribute('list', 'raiderList')
     discordId.className = "selects"
     discordId.id = "User" + i
     discordId.addEventListener('keypress', idEntered)
+    discordId.appendChild(raiderList)
     discordIdCell.appendChild(discordId)
 
     var nameCell = row.insertCell(2)
@@ -108,15 +141,7 @@ function populateTable() {
       role.id = "RoleBoss" + j + "User" + i
       role.addEventListener('change', somethingSelected)
 
-      var opt = document.createElement('option')
-      opt.id = "RoleBoss" + j + "User" + i + "OptionNone"
-      opt.className = "options"
-      opt.value = "None"
-      opt.disabled = true
-      opt.hidden = true
-      opt.selected = true
-      opt.text = "-------"
-      role.appendChild(opt)
+      addNoneOption(role)
       roleCell.appendChild(role)
 
       var roleReset = document.createElement('input')
@@ -124,12 +149,14 @@ function populateTable() {
       roleReset.value = "reset"
       roleReset.column = "RoleBoss" + j + "User"
       roleReset.user = i
+      roleReset.className = "selects"
       roleReset.addEventListener('click', unsetSelect)
       roleCell.appendChild(roleReset)
 
       var roleReact = document.createElement('img')
       roleReact.id = "RoleBoss" + j + "User" + i + "Image"
       roleReact.height = "24"
+      roleReact.style.display = "none"
       roleCell.appendChild(roleReact)
 
       var tagCell = row.insertCell(columnIndex + 1)
@@ -140,15 +167,7 @@ function populateTable() {
       tag.id = "TagBoss" + j + "User" + i
       tag.addEventListener('change', somethingSelected)
 
-      var opt2 = document.createElement('option')
-      opt2.id = "TagBoss" + j + "User" + i + "OptionNone"
-      opt2.className = "options"
-      opt2.value = "None"
-      opt2.disabled = true
-      opt2.hidden = true
-      opt2.selected = true
-      opt2.text = "-------"
-      tag.appendChild(opt2)
+      addNoneOption(tag)
       tagCell.appendChild(tag)
 
       var tagReset = document.createElement('input')
@@ -156,12 +175,14 @@ function populateTable() {
       tagReset.value = "reset"
       tagReset.column = "TagBoss" + j + "User"
       tagReset.user = i
+      tagReset.className = "selects"
       tagReset.addEventListener('click', unsetSelect)
       tagCell.appendChild(tagReset)
 
       var tagReact = document.createElement('img')
       tagReact.id = "TagBoss" + j + "User" + i + "Image"
       tagReact.height = "24"
+      tagReact.style.display = "none"
       tagCell.appendChild(tagReact)
     }
   }
@@ -181,7 +202,8 @@ function unsetSelect() {
     otherUserOption = document.getElementById(this.column + i + "Option" + selectedOption.value)
     otherUserOption.disabled = false
   }
-  previousOptionValueJson[this.column + this.user] = "None"}
+  previousOptionValueJson[this.column + this.user] = "None"
+}
 
 function setBosses(wing) {
   var noData = false
@@ -197,27 +219,16 @@ function setBosses(wing) {
     for(let j = 1; j <= 10; j++) {
       var roleBoss = document.getElementById("RoleBoss" + i + "User" + j)
       clearOptions(roleBoss)
-      var opt = document.createElement('option')
-      opt.id = "RoleBoss" + i + "User" + j + "OptionNone"
-      opt.className = "options"
-      opt.value = "None"
-      opt.disabled = true
-      opt.hidden = true
-      opt.selected = true
-      opt.text = "-------"
-      roleBoss.appendChild(opt)
+      addNoneOption(roleBoss)
 
       var tagBoss = document.getElementById("TagBoss" + i + "User" + j)
       clearOptions(tagBoss)
-      var opt2 = document.createElement('option')
-      opt2.id = "TagBoss" + i + "User" + j + "OptionNone"
-      opt2.className = "options"
-      opt2.value = "None"
-      opt2.disabled = true
-      opt2.hidden = true
-      opt2.selected = true
-      opt2.text = "-------"
-      tagBoss.appendChild(opt2)
+      addNoneOption(tagBoss)
+
+      var roleReact = document.getElementById("RoleBoss" + i + "User" + j + "Image")
+      roleReact.style.display = "none"
+      var tagReact = document.getElementById("TagBoss" + i + "User" + j + "Image")
+      tagReact.style.display = "none"
 
       if (noData) {
         continue
@@ -250,19 +261,328 @@ function setBosses(wing) {
   }
 }
 
+function setRoleBosses() {
+  var bossSelect = document.getElementById("bossRoles")
+  var roleSelect = document.getElementById("roleSelect")
+  var tagSelect = document.getElementById("tagSelect")
+  clearOptions(bossSelect)
+  clearOptions(roleSelect)
+  clearOptions(tagSelect)
+  addNoneOption(bossSelect)
+  addNoneOption(roleSelect)
+  addNoneOption(tagSelect)
+  clearRoleAndTagEditor()
+
+  for (let i = 1; i <= 4; i++) {
+    var boss = wingRoleJson[this.value]["boss" + i]
+    if (boss['name'] != null) {
+      var opt = document.createElement('option')
+      opt.id = "boss" + i
+      opt.className = "options"
+      opt.text = boss['name']
+      opt.value = "boss" + i
+      bossRoles.add(opt)
+    } 
+  }
+}
+
+function setRoles(ele) {
+  var wingSelector = document.getElementById("wingRoles")
+  var roleSelect = document.getElementById("roleSelect")
+  clearOptions(roleSelect)
+  addNoneOption(roleSelect)
+  var roleList = wingRoleJson[wingSelector.value][ele.value].roles
+  for (let i = 0; i < roleList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "role" + i
+    opt.className = "options"
+    opt.text = roleList[i]['name']
+    opt.value = roleList[i]['value']
+    opt.ena = true
+    roleSelect.add(opt)
+  }
+  var disabledRoleList = wingRoleJson[wingSelector.value][ele.value].disabledRoles
+  for (let i = 0; i < disabledRoleList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "disabledRole" + i
+    opt.className = "options"
+    opt.text = roleList[i]['name']
+    opt.value = roleList[i]['value']
+    opt.ena = false
+    roleSelect.add(opt)
+  }
+}
+
+function setTags(ele) {
+  var wingSelector = document.getElementById("wingRoles")
+  var tagSelect = document.getElementById("tagSelect")
+  clearOptions(tagSelect)
+  addNoneOption(tagSelect)
+  var tagList = wingRoleJson[wingSelector.value][ele.value].tags
+  for (let i = 0; i < tagList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "tag" + i
+    opt.className = "options"
+    opt.text = tagList[i]['name']
+    opt.value = tagList[i]['value']
+    opt.ena = true
+    tagSelect.add(opt)
+  }  
+  var disabledTagList = wingRoleJson[wingSelector.value][ele.value].disabledTags
+  for (let i = 0; i < disabledTagList.length; i++) {
+    var opt = document.createElement('option')
+    opt.id = "disabledTag" + i
+    opt.className = "options"
+    opt.text = roleList[i]['name']
+    opt.value = roleList[i]['value']
+    opt.ena = false
+    tagSelect.add(opt)
+  }
+}
+
+function setRolesAndTag() {
+  setRoles(this)
+  setTags(this)
+  clearRoleAndTagEditor()
+}
+
 function clearOptions(ele) {
   var i, L = ele.options.length - 1;
   for(i = L; i >= 0; i--) {
      ele.remove(i);
   }
 }
-
 function wingSelect() {
   setBosses(this.value)
 }
 
-function todoOnload () {
+function roleEditorSelect() {
+  var roleEnable = document.getElementById("roleEnable")
+  roleEnable.disabled = false
+  roleEnable.checked = this.options[this.selectedIndex].ena
+  var nameText = document.getElementById("roleNameText")
+  var reactText = document.getElementById("roleReactText")
+  nameText.disabled = false
+  reactText.disabled = false
+  nameText.value = this.options[this.selectedIndex].text
+  reactText.value = this.value
+}
+
+function tagEditorSelect() {
+  var tagEnable = document.getElementById("tagEnable")
+  tagEnable.disabled = false
+  tagEnable.checked = false
+  tagEnable.checked = this.options[this.selectedIndex].ena
+  var nameText = document.getElementById("tagNameText")
+  var reactText = document.getElementById("tagReactText")
+  nameText.disabled = false
+  reactText.disabled = false
+  nameText.value = this.options[this.selectedIndex].text
+  reactText.value = this.value
+}
+
+function clearRoleAndTagEditor() {
+  var roleEnable = document.getElementById("roleEnable")
+  roleEnable.disabled = true
+  roleEnable.checked = false
+  var roleNameText = document.getElementById("roleNameText")
+  roleNameText.disabled = true
+  roleNameText.value = ""
+  var roleReactText = document.getElementById("roleReactText")
+  roleReactText.disabled = true
+  roleReactText.value = ""
+  var tagEnable = document.getElementById("tagEnable")
+  tagEnable.disabled = true
+  tagEnable.checked = false
+  var tagNameText = document.getElementById("tagNameText")
+  tagNameText.disabled = true
+  tagNameText.value = ""
+  var tagReactText = document.getElementById("tagReactText")
+  tagReactText.disabled = true
+  tagReactText.value = ""
+}
+
+function checkAndGetCookie() {
+  newJson = {}
+  var cookieExists = true
+  for (var i = 1; i <= 7; i++) {
+    wingCookie = getCookie("wing" + i)
+    if (!wingCookie) {
+      cookieExists = false
+    }
+    var wingJson = JSON.parse(getCookie("wing" + i))
+    newJson["wing" + i] = wingJson
+  }
+  if (!cookieExists) {
+    console.log("No cookies set")
+    setRACookies
+  } else {
+    wingRoleJson = newJson
+    console.log("cookies retrieved")
+  }
+}
+
+function getCookie(cName) {
+  const name = cName + "=";
+  const cDecoded = decodeURIComponent(document.cookie); //to be careful
+  const cArr = cDecoded .split('; ');
+  let res;
+  cArr.forEach(val => {
+      if (val.indexOf(name) === 0) res = val.substring(name.length);
+  })
+  return res;
+}
+
+function setRACookies() {
+  var keys = Object.keys(wingRoleJson)
+  for (var i = 0; i < keys.length; i++) {
+    setCookie(keys[i], JSON.stringify(wingRoleJson[keys[i]]), 30)
+  }
+}
+
+function setRole() {
+  var roleSelector = document.getElementById("roleSelect")
+  var opt = roleSelector.options[roleSelector.selectedIndex]
+  var enableBox = document.getElementById("roleEnable")
+  var nameBox = document.getElementById("roleNameText")
+  var reactBox = document.getElementById("roleReactText")
+
+  opt.text = nameBox.value
+  opt.value = reactBox.value
+  opt.ena = enableBox.checked
+  updateRoles()
+}
+
+function setTag() {
+  var tagSelector = document.getElementById("tagSelect")
+  var opt = tagSelector.options[tagSelector.selectedIndex]
+  var enableBox = document.getElementById("tagEnable")
+  var nameBox = document.getElementById("tagNameText")
+  var reactBox = document.getElementById("tagReactText")
+
+  opt.text = nameBox.value
+  opt.value = reactBox.value
+  opt.ena = enableBox.checked
+  updateRoles()
+}
+
+function updateRoles() {
+  var wingSelector = document.getElementById("wingRoles")
+  var bossSelector = document.getElementById("bossRoles")
+  var roleSelector = document.getElementById("roleSelect")
+  var roleList = wingRoleJson[wingSelector.value][bossSelector.value].roles
+  roleList = []
+  var disabledRoleList = wingRoleJson[wingSelector.value][bossSelector.value].disabledRoles
+  disabledRoleList = []
+  for (var i = 0; i < roleSelector.options.length; i++) {
+    var opt = roleSelector.options[i]
+    var jsonRole = new Object()
+    jsonRole.name = opt.text
+    jsonRole.value = opt.value
+    if (opt.ena) {
+      roleList.push(jsonRole)
+    } else {
+      disabledRoleList.push(jsonRole)
+    }
+  }
+  wingRoleJson[wingSelector.value][bossSelector.value].roles = roleList
+  wingRoleJson[wingSelector.value][bossSelector.value].disabledRoles = disabledRoleList
+  setRACookies()
+}
+
+function updateTags() {
+  var wingSelector = document.getElementById("wingRoles")
+  var bossSelector = document.getElementById("bossRoles")
+  var tagSelector = document.getElementById("tagSelect")
+  var tagList = wingRoleJson[wingSelector.value][bossSelector.value].tags
+  tagList = []
+  var disabledTagList = wingRoleJson[wingSelector.value][bossSelector.value].disabledTags
+  disabledTagList = []
+  for (var i = 0; i < tagSelector.options.length; i++) {
+    var opt = tagSelector.options[i]
+    var jsonRole = new Object()
+    jsonRole.name = opt.text
+    jsonRole.value = opt.value
+    if (opt.ena) {
+      tagList.push(jsonRole)
+    } else {
+      disabledTagList.push(jsonRole)
+    }
+  }
+  wingRoleJson[wingSelector.value][bossSelector.value].tags = tagList
+  wingRoleJson[wingSelector.value][bossSelector.value].disabledTags = disabledTagList
+  setRACookies()
+}
+
+function showSnackbar() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  generatePing()
+}
+
+function setCookie(cName, cValue, expDays) {
+  let date = new Date();
+  date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + date.toUTCString();
+  console.log(expires)
+  document.cookie = cName + "=" + cValue + "; " + expires + ";";
+}
+
+function resetToDefaultJson() {
+  wingRoleJson = wingRoleJsonDefault
+  setRACookies()
+}
+
+function generatePing() {
+  var text = ""
+  var wing = document.getElementById("wing").value
+  for (var i = 1; i <= 10; i++) {
+    for (var j = 1; j <= 4; j++) {
+      var boss = wingRoleJson[wing]["boss" + j]
+      if (boss["name"] == null) {
+        continue
+      }
+      var bossRole = document.getElementById("RoleBoss" + j + "User" + i)
+      if (bossRole.value == "None") {
+        text += ":black_large_square:"
+      } else {
+        var selectedReact = bossRole.options[bossRole.selectedIndex].react
+        text += ":" + selectedReact + ":"
+      }
+      var bossTag = document.getElementById("TagBoss" + j + "User" + i)
+      if (bossTag.value == "None") {
+        text += ":black_large_square:"
+      } else {
+        var selectedReact = bossTag.options[bossTag.selectedIndex].react
+        text += ":" + selectedReact + ":"
+      }
+      text += "|"
+    }
+    var userId = document.getElementById("User" + i)
+    text += " <@" + userId.value +">\r\n"
+  }
+  console.log(text)
+}
+
+function mainOnload () {
+  checkAndGetCookie()
+  populateUsers()
   populateTable()
-  let wingSelector = document.getElementById("wing")
-  wing.addEventListener('change', wingSelect)
+  var wingSelector = document.getElementById("wing")
+  wingSelector.addEventListener('change', wingSelect)
+  wingSelector.value = "wing1"
+  setBosses("wing1")
+}
+
+function rolesOnload () {
+  checkAndGetCookie()
+  var wingSelector = document.getElementById("wingRoles")
+  wingSelector.addEventListener('change', setRoleBosses)
+  var bossSelector = document.getElementById("bossRoles")
+  bossSelector.addEventListener('change', setRolesAndTag)
+  var roleSelector = document.getElementById("roleSelect")
+  roleSelector.addEventListener('change', roleEditorSelect)
+  var tagSelector = document.getElementById("tagSelect")
+  tagSelector.addEventListener('change', tagEditorSelect)
 }
