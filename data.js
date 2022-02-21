@@ -415,7 +415,7 @@ var wingRoleJsonDefault = {
           { name:'Alacrity', value:"Alacrity" },
           { name:'Alacrity', value:"Alacrity" },
           { name:'Banners', value:"0_warrior_berserker" },
-          { name:'Kite', value:"Kite" },
+          { name:'Kite', value:"kite" },
           { name:'DPS', value:"crossed_swords" },
           { name:'DPS', value:"crossed_swords" },
           { name:'DPS', value:"crossed_swords" }
